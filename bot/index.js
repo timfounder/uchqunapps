@@ -34,18 +34,41 @@ function launchKeyboard() {
   ]);
 }
 
+bot.use(async (ctx, next) => {
+  console.log(`[update] type=${ctx.updateType} from=${ctx.from?.id} text=${ctx.message?.text ?? ''}`);
+  return next();
+});
+
 bot.start(async (ctx) => {
   const code = (ctx.from?.language_code || '').toLowerCase();
   const lang = code.startsWith('ru') ? 'ru' : code.startsWith('uz') ? 'uz' : 'en';
-  await ctx.reply(`${GREETING[lang]}\n\n${GREETING.uz === GREETING[lang] ? '' : GREETING.uz}`.trim(), launchKeyboard());
+  await ctx.reply(GREETING[lang], launchKeyboard());
 });
 
 bot.command('open', async (ctx) => {
   await ctx.reply('Tap to launch:', launchKeyboard());
 });
 
-bot.launch().then(() => {
+bot.catch((err, ctx) => {
+  console.error(`[error] update ${ctx?.update?.update_id}:`, err);
+});
+
+async function main() {
+  const me = await bot.telegram.getMe();
+  console.log(`Logged in as @${me.username} (id ${me.id})`);
+
+  // A stale webhook silently swallows every getUpdates call — clear it
+  // and drop any pending updates so we start from a clean state.
+  await bot.telegram.deleteWebhook({ drop_pending_updates: true });
+  console.log('Webhook cleared, pending updates dropped.');
+
+  await bot.launch({ dropPendingUpdates: true });
   console.log('Bot is running. WebApp URL:', WEBAPP_URL);
+}
+
+main().catch((err) => {
+  console.error('Fatal startup error:', err);
+  process.exit(1);
 });
 
 process.once('SIGINT',  () => bot.stop('SIGINT'));

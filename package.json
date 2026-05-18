@@ -1,0 +1,16 @@
+{
+  "name": "uchqunapps",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Uchqun — 3D Solar System Mini App and Telegram bot launcher.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node bot/index.js"
+  },
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
+}

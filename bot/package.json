@@ -1,0 +1,17 @@
+{
+  "name": "uchqunapps-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Telegram bot launcher for the Uchqun Solar System Mini App.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
+}

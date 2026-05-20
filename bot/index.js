@@ -74,13 +74,36 @@ async function main() {
   await bot.telegram.deleteWebhook({ drop_pending_updates: true });
   console.log('Webhook cleared, pending updates dropped.');
 
-  bot.launch({ dropPendingUpdates: true });
-  console.log('Bot is running. WebApp URL:', WEBAPP_URL);
+  // Long-polling can fail with 409 when another instance briefly overlaps
+  // during a rolling deploy. Don't crash — wait it out and retry, so the
+  // container self-heals once the other instance shuts down.
+  let attempt = 0;
+  while (true) {
+    try {
+      await bot.launch({ dropPendingUpdates: true });
+      console.log('Polling loop exited cleanly.');
+      return;
+    } catch (err) {
+      const code = err?.response?.error_code;
+      if (code === 409) {
+        const wait = Math.min(60_000, 5_000 * Math.pow(2, attempt++));
+        console.warn(`[polling] 409 conflict — another instance is polling. Retrying in ${wait / 1000}s.`);
+        await new Promise((r) => setTimeout(r, wait));
+        continue;
+      }
+      console.error('[polling] Unexpected error, retrying in 10s:', err);
+      await new Promise((r) => setTimeout(r, 10_000));
+    }
+  }
 }
 
 main().catch((err) => {
   console.error('Fatal startup error:', err);
   process.exit(1);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[unhandledRejection]', reason);
 });
 
 process.once('SIGINT',  () => bot.stop('SIGINT'));

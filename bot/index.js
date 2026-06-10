@@ -19,7 +19,7 @@ const bot = new Telegraf(BOT_TOKEN);
 const GREETING = {
   en: 'Welcome to Uchqun — a 3D Solar System you can fly through. Pick a language:',
   ru: 'Добро пожаловать в Uchqun — 3D Солнечная система, по которой можно летать. Выбери язык:',
-  uz: 'Uchqun’ga xush kelibsiz — uchib o‘taladigan 3D Quyosh tizimi. Tilni tanlang:',
+  uz: 'Uchqunga xush kelibsiz — ichida uchib sayr qilish mumkin boʻlgan 3D Quyosh tizimi. Tilni tanlang:',
 };
 
 function urlFor(lang) {
@@ -30,7 +30,7 @@ function urlFor(lang) {
 
 function launchKeyboard() {
   return Markup.inlineKeyboard([
-    [Markup.button.webApp('🇺🇿 O‘zbekcha', urlFor('uz'))],
+    [Markup.button.webApp('🇺🇿 Oʻzbekcha', urlFor('uz'))],
     [Markup.button.webApp('🇷🇺 Русский',  urlFor('ru'))],
     [Markup.button.webApp('🇬🇧 English',  urlFor('en'))],
   ]);

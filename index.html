@@ -1166,7 +1166,7 @@
             <button class="pill glass" id="event-pill" hidden></button>
             <div class="top-right-stack">
               <button class="pill glass toggle-on" id="scale-toggle">Not to Scale</button>
-              <button class="pill glass toggle-off" id="outer-toggle">Uzoq sayyoralarni ko’rsatish</button>
+              <button class="pill glass toggle-off" id="outer-toggle">Uzoq sayyoralarni koʻrsatish</button>
               <button id="sound-toggle" class="icon-btn" aria-label="Play ambient">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12a4.5 4.5 0 0 0-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zM19 12c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.96 8.96 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
               </button>
@@ -1428,7 +1428,7 @@ const SPEEDS = [
 // ===================================================================
 // Three languages: English (default), Russian, Uzbek (modern Latin script).
 // Translations were chosen for naturalness, not literal one-to-one rendering.
-// Uzbek uses the ʻ apostrophe variant (U+02BB) for "o\u2019" and "g\u2019" digraphs as is
+// Uzbek uses the ʻ apostrophe variant (U+02BB) for "oʻ" and "gʻ" digraphs as is
 // official orthography.
 const STRINGS = {
   en: {
@@ -1470,6 +1470,10 @@ const STRINGS = {
     ratioSmaller: '× smaller than Earth',
     unitYears: 'years',
     unitHours: 'hours',
+    unitKm: 'km',
+    unitKg: 'kg',
+    unitAU: 'AU',
+    unitKmS: 'km/s',
     onboardSkip: 'Skip',
     onboardNext: 'Next',
     onboardDone: 'Got it',
@@ -1574,10 +1578,14 @@ const STRINGS = {
     ratioSmaller: '× меньше Земли',
     unitYears: 'лет',
     unitHours: 'ч',
+    unitKm: 'км',
+    unitKg: 'кг',
+    unitAU: 'а.е.',
+    unitKmS: 'км/с',
     onboardSkip: 'Пропустить',
     onboardNext: 'Дальше',
     onboardDone: 'Понятно',
-    onboard1Title: 'Привет от Uchqun',
+    onboard1Title: 'Добро пожаловать в Uchqun',
     onboard1Text: 'Это 3D-Солнечная система, по которой можно летать. Настоящие орбиты, расстояния и положения планет на сегодня.',
     onboard2Title: 'Управление',
     onboard2Text: 'Один палец — крутить вид. Два пальца — приближать. Тап по планете — сфокусироваться на ней.',
@@ -1590,11 +1598,11 @@ const STRINGS = {
     eventTomorrow: 'завтра',
     eventLast: '{n} дн. назад',
     'event.fullMoon': 'Полнолуние',
-    'event.fullMoonDesc': 'Луна напротив Солнца в небе — полностью освещена с Земли.',
+    'event.fullMoonDesc': 'Луна в небе напротив Солнца — её диск полностью освещён.',
     'event.newMoon': 'Новолуние',
-    'event.newMoonDesc': 'Луна между Солнцем и Землёй и невидима. Идеальная ночь для наблюдения за звёздами.',
+    'event.newMoonDesc': 'Луна находится между Солнцем и Землёй и не видна. Идеальная ночь для наблюдения за звёздами.',
     'event.marsOpposition': 'Противостояние Марса',
-    'event.marsOppositionDesc': 'Марс на противоположной от Солнца стороне Земли — самый близкий, яркий, виден всю ночь.',
+    'event.marsOppositionDesc': 'Марс находится на противоположной Солнцу стороне неба — он ближе и ярче всего и виден всю ночь.',
     'event.solarEclipse': 'Солнечное затмение',
     'event.solarEclipseDesc': 'Луна проходит между Солнцем и Землёй, отбрасывая тень на Землю.',
     'event.lunarEclipse': 'Лунное затмение',
@@ -1641,15 +1649,15 @@ const STRINGS = {
   },
   uz: {
     bodies: 'Jismlar',
-    showOuter: "Uzoq sayyoralarni ko\u2019rsatish",
+    showOuter: "Uzoq sayyoralarni koʻrsatish",
     innerOnly: 'Faqat yaqinlari',
-    mute: "Tovushni o\u2019chirish",
+    mute: "Tovushni oʻchirish",
     playAmbient: 'Tovushni yoqish',
     randomBody: 'Tasodifiy jism',
     profile: 'Profil',
     language: 'Til',
     info: 'Batafsil',
-    didYouKnow: 'Bilarmidingiz?',
+    didYouKnow: 'Bilasizmi?',
     habitability: 'Yashashga yaroqlilik',
     beta: 'Beta',
     mass: 'Massa',
@@ -1657,86 +1665,90 @@ const STRINGS = {
     orbit: 'Orbita',
     speed: 'Tezlik',
     eccentricity: 'Ekssentriklik',
-    inclination: "Og\u2019ish",
-    axialTilt: "O\u2019q og\u2019ishi",
+    inclination: "Ogʻish",
+    axialTilt: "Oʻq ogʻishi",
     year: 'Yil',
     day: 'Sutka',
     distanceFromSun: 'Quyoshdan masofa',
     star: 'yulduz',
     planet: 'sayyora',
     dwarf_planet: 'mitti sayyora',
-    moon: "yo\u2019ldosh",
+    moon: "yoʻldosh",
     comet: 'kometa',
     spacecraft: 'kosmik kema',
     habHigh: 'Yashashga yaroqli',
     habMedium: 'Qisman yaroqli',
-    habLow: 'Yashashga noqulay',
+    habLow: 'Yashash uchun xavfli',
     habNone: 'Yashash mumkin emas',
-    sizeVsEarth: 'Yerga nisbatan o’lcham',
+    sizeVsEarth: 'Yerga nisbatan oʻlcham',
     earthLabel: 'Yer',
-    ratioLarger: '× Yer',
+    ratioLarger: '× Yerdan katta',
     ratioSmaller: '× Yerdan kichik',
     unitYears: 'yil',
     unitHours: 'soat',
-    onboardSkip: 'O’tkazib yuborish',
+    unitKm: 'km',
+    unitKg: 'kg',
+    unitAU: 'a.b.',
+    unitKmS: 'km/s',
+    onboardSkip: 'Oʻtkazib yuborish',
     onboardNext: 'Keyingisi',
     onboardDone: 'Tushundim',
-    onboard1Title: 'Uchqun’ga xush kelibsiz',
-    onboard1Text: 'Bu — uchib o‘taladigan 3D Quyosh tizimi. Haqiqiy orbitalar, masofalar va sayyoralarning bugungi joylashuvi.',
+    onboard1Title: 'Uchqunga xush kelibsiz',
+    onboard1Text: 'Bu — ichida uchib sayr qilish mumkin boʻlgan 3D Quyosh tizimi. Haqiqiy orbitalar, masofalar va sayyoralarning bugungi joylashuvi.',
     onboard2Title: 'Boshqaruv',
-    onboard2Text: 'Bir barmoq — ko‘rinishni aylantirish. Ikki barmoq — yaqinlashtirish. Sayyorani bosib uni fokuslang.',
+    onboard2Text: 'Bir barmoq — koʻrinishni aylantirish. Ikki barmoq — yaqinlashtirish. Sayyoraga teging — kamera unga fokuslanadi.',
     onboard3Title: 'Vaqt mashinasi',
-    onboard3Text: 'Pastdagi slayder vaqtni 50 yil oldinga yoki orqaga suradi. Sayyoralarning joylashuvi qanday o‘zgarishini ko‘ring.',
+    onboard3Text: 'Pastdagi slayder vaqtni 50 yil oldinga yoki orqaga suradi. Sayyoralarning joylashuvi qanday oʻzgarishini koʻring.',
     eventPillSoon: 'Yaqinda',
-    eventGo: 'Ko‘rsatish',
+    eventGo: 'Koʻrsatish',
     eventToday: 'Bugun',
     eventInDays: '{n} kundan keyin',
     eventTomorrow: 'ertaga',
     eventLast: '{n} kun oldin',
-    'event.fullMoon': 'To‘linoy',
-    'event.fullMoonDesc': 'Oy osmonda Quyoshga teskari tarafda — Yerdan to‘liq yoritilgan ko‘rinadi.',
+    'event.fullMoon': 'Toʻlinoy',
+    'event.fullMoonDesc': 'Oy osmonda Quyoshga qarama-qarshi tomonda — Yerdan toʻliq yoritilgan koʻrinadi.',
     'event.newMoon': 'Yangi Oy',
-    'event.newMoonDesc': 'Oy Quyosh va Yer orasida turadi va ko‘rinmaydi. Yulduzlarni kuzatish uchun eng yaxshi tun.',
-    'event.marsOpposition': 'Marsning qarama-qarshilanishi',
-    'event.marsOppositionDesc': 'Mars Yerga Quyoshga nisbatan qarama-qarshi tomondan — eng yaqin, eng yorqin va butun tun davomida ko‘rinadi.',
+    'event.newMoonDesc': 'Oy Quyosh va Yer orasida turadi va koʻrinmaydi. Yulduzlarni kuzatish uchun eng yaxshi tun.',
+    'event.marsOpposition': 'Marsning qarama-qarshi turishi',
+    'event.marsOppositionDesc': 'Mars osmonda Quyoshga qarama-qarshi tomonda — Yerga eng yaqin, eng yorqin va tun boʻyi koʻrinadi.',
     'event.solarEclipse': 'Quyosh tutilishi',
-    'event.solarEclipseDesc': 'Oy Quyosh bilan Yer orasidan o‘tib, Yerga soya tashlaydi.',
+    'event.solarEclipseDesc': 'Oy Quyosh bilan Yer orasidan oʻtib, Yerga soya tashlaydi.',
     'event.lunarEclipse': 'Oy tutilishi',
-    'event.lunarEclipseDesc': 'Yer Oyga tushadigan quyosh nurini to‘sib qo‘yadi — Yerning soyasi Oyga tushadi.',
-    'event.perseids': 'Perseid meteor yomg‘irining cho‘qqisi',
+    'event.lunarEclipseDesc': 'Yer Oyga tushadigan quyosh nurini toʻsib qoʻyadi — Yerning soyasi Oyga tushadi.',
+    'event.perseids': 'Perseid meteor yomgʻirining choʻqqisi',
     'event.perseidsDesc': 'Soatiga 100 tagacha meteor — radiant Persey burjida.',
-    'event.geminids': 'Geminid meteor yomg‘irining cho‘qqisi',
-    'event.geminidsDesc': 'Yilning eng kuchli yomg‘irlaridan biri — Egizaklar burjidan soatiga 120 tagacha meteor.',
-    'event.jupiterOpposition': 'Yupiterning qarama-qarshilanishi',
-    'event.jupiterOppositionDesc': 'Yupiter Yerga eng yaqin va osmonda eng yorqin — butun tun davomida ko‘rinadi.',
-    'event.saturnOpposition': 'Saturnning qarama-qarshilanishi',
-    'event.saturnOppositionDesc': 'Saturn Yerga eng yaqin va eng yorqin — uning halqalarini ko‘rishning eng yaxshi vaqti.',
-    arTitle: 'AR osmon yo‘riqchisi',
-    arIntro: 'Sayyorani tanlang va telefonni osmonga qarating. Strelka qayerga qarashni ko‘rsatadi.',
+    'event.geminids': 'Geminid meteor yomgʻirining choʻqqisi',
+    'event.geminidsDesc': 'Yilning eng kuchli yomgʻirlaridan biri — Egizaklar burjidan soatiga 120 tagacha meteor.',
+    'event.jupiterOpposition': 'Yupiterning qarama-qarshi turishi',
+    'event.jupiterOppositionDesc': 'Yupiter Yerga eng yaqin va osmonda eng yorqin — butun tun davomida koʻrinadi.',
+    'event.saturnOpposition': 'Saturnning qarama-qarshi turishi',
+    'event.saturnOppositionDesc': 'Saturn Yerga eng yaqin va eng yorqin — uning halqalarini koʻrishning eng yaxshi vaqti.',
+    arTitle: 'AR osmon gidi',
+    arIntro: 'Sayyorani tanlang va telefonni osmonga qarating. Strelka qayerga qarashni koʻrsatadi.',
     arEnable: 'Sensorlarga ruxsat berish',
-    arNoSensor: 'Sizning qurilmangiz yoki brauzeringiz orientatsiya ma’lumotlarini bermayapti. Telegram ilovasi orqali telefonda oching.',
-    arBelowHorizon: 'Hozir ufqdan past',
+    arNoSensor: 'Sizning qurilmangiz yoki brauzeringiz orientatsiya maʼlumotlarini bermayapti. Telegram ilovasi orqali telefonda oching.',
+    arBelowHorizon: 'Hozir ufq ostida',
     arLocked: 'Topdim!',
     arUp: 'tepaga',
     arDown: 'pastga',
     arLeft: 'chapga',
-    arRight: 'o‘ngga',
+    arRight: 'oʻngga',
     arAlt: 'Balandlik',
     arAz: 'Azimut',
-    birthdayTitle: 'Tug‘ilgan kuningiz koinotda',
-    birthdayPrompt: 'Tug‘ilgan sanani kiriting. Sayyoralar qayerda bo‘lganini va siz Yer bilan qancha yo‘l bosganingizni ko‘rsataman.',
+    birthdayTitle: 'Koinotdagi tugʻilgan kuningiz',
+    birthdayPrompt: 'Tugʻilgan sanani kiriting. Sayyoralar qayerda boʻlganini va siz Yer bilan qancha yoʻl bosganingizni koʻrsataman.',
     birthdayPlaceholder: 'YYYY-OO-KK',
-    birthdayGo: 'Ko‘rsatish',
+    birthdayGo: 'Koʻrsatish',
     birthdayInvalid: 'Format: YYYY-OO-KK.',
     birthdayOrbits: 'Quyosh atrofidagi aylanishlar',
-    birthdayKm: 'Yer bilan bosib o‘tilgan kilometr',
-    birthdayMoonOrbits: 'Tug‘ilganingizdan beri Oy aylanishlari',
+    birthdayKm: 'Yer bilan birga bosib oʻtilgan kilometrlar',
+    birthdayMoonOrbits: 'Tugʻilganingizdan beri Oy aylanishlari',
     birthdayDays: 'Yashagan kunlar',
-    birthdaySee: 'O‘sha kungi osmonni ko‘rsatish',
+    birthdaySee: 'Oʻsha kungi osmonni koʻrsatish',
     birthdayReset: 'Tozalash',
     profileLanguage: 'Til',
-    profileBirthday: 'Tug‘ilgan kun koinotda',
-    'speed.realtime': '1 son/s',
+    profileBirthday: 'Koinotdagi tugʻilgan kun',
+    'speed.realtime': '1 soniya/s',
     'speed.hours':    '1 soat/s',
     'speed.day':      '1 sutka/s',
     'speed.days3':    '3 sutka/s',
@@ -1758,50 +1770,50 @@ const BODY_I18N = {
   sun: {
     name: { ru: 'Солнце', uz: 'Quyosh' },
     description: { ru: 'Звезда в центре Солнечной системы.', uz: 'Quyosh tizimining markazidagi yulduz.' },
-    didYouKnow: { ru: 'На Солнце приходится около 99,86% всей массы Солнечной системы.', uz: 'Quyosh tizimining umumiy massasining taxminan 99,86% Quyoshga to’g’ri keladi.' },
+    didYouKnow: { ru: 'На Солнце приходится около 99,86% всей массы Солнечной системы.', uz: 'Quyosh tizimi umumiy massasining taxminan 99,86 foizi Quyoshga toʻgʻri keladi.' },
   },
   mercury: {
     name: { ru: 'Меркурий', uz: 'Merkuriy' },
     description: { ru: 'Самая маленькая планета Солнечной системы и ближайшая к Солнцу.', uz: 'Quyosh tizimidagi eng kichik va Quyoshga eng yaqin sayyora.' },
-    didYouKnow: { ru: 'День на Меркурии длиннее, чем его год.', uz: 'Merkuriydagi bir kun uning bir yilidan uzunroq.' },
+    didYouKnow: { ru: 'Сутки на Меркурии длятся дольше, чем его год.', uz: 'Merkuriydagi bir kun uning bir yilidan uzunroq davom etadi.' },
   },
   venus: {
     name: { ru: 'Венера', uz: 'Venera' },
     description: { ru: 'Самая горячая планета с экстремальным парниковым эффектом.', uz: 'Eng issiq sayyora — kuchli issiqxona effekti bilan.' },
-    didYouKnow: { ru: 'Венера вращается в обратную сторону по сравнению с большинством планет.', uz: 'Venera ko’pchilik sayyoralarga nisbatan teskari aylanadi.' },
+    didYouKnow: { ru: 'Венера вращается в обратную сторону по сравнению с большинством планет.', uz: 'Venera koʻpchilik sayyoralarga nisbatan teskari aylanadi.' },
   },
   earth: {
     name: { ru: 'Земля', uz: 'Yer' },
-    description: { ru: 'Третья планета от Солнца и единственный известный мир, где есть жизнь. Около 71% поверхности покрыто водой.', uz: 'Quyoshdan uchinchi sayyora va hayot borligi ma’lum bo’lgan yagona olam. Yuzasining 71% suv bilan qoplangan.' },
-    didYouKnow: { ru: 'Земля — единственная планета, названная не в честь греческого или римского божества. Её название восходит к древнеанглийскому слову, означающему «почва».', uz: 'Yer yunon yoki rim ma’budasi nomi bilan atalmagan yagona sayyora. Uning nomi qadimgi ingliz tilidagi «tuproq» so’zidan kelib chiqqan.' },
+    description: { ru: 'Третья планета от Солнца и единственный известный мир, где есть жизнь. Около 71% поверхности покрыто водой.', uz: 'Quyoshdan uchinchi sayyora va hayot borligi maʼlum boʻlgan yagona olam. Yuzasining 71% suv bilan qoplangan.' },
+    didYouKnow: { ru: 'Земля — единственная планета, названная не в честь греческого или римского божества. Её название восходит к древнеанглийскому слову, означающему «почва».', uz: 'Yer yunon yoki rim maʼbudasi nomi bilan atalmagan yagona sayyora. Uning nomi qadimgi ingliz tilidagi «tuproq» soʻzidan kelib chiqqan.' },
   },
   mars: {
     name: { ru: 'Марс', uz: 'Mars' },
-    description: { ru: 'Четвёртая планета от Солнца, известная как Красная планета из-за оксида железа на поверхности. На ней находится самый высокий вулкан Солнечной системы.', uz: 'Quyoshdan to’rtinchi sayyora; yuzasidagi temir oksidi tufayli Qizil sayyora deb ataladi. Quyosh tizimidagi eng baland vulqonga ega.' },
-    didYouKnow: { ru: 'Гора Олимп на Марсе примерно в два с половиной раза выше Эвереста — самый высокий известный вулкан Солнечной системы.', uz: 'Marsdagi Olimp tog’i Everestdan taxminan ikki yarim baravar baland — bu Quyosh tizimidagi eng baland ma’lum vulqon.' },
+    description: { ru: 'Четвёртая планета от Солнца, известная как Красная планета из-за оксида железа на поверхности. На ней находится самый высокий вулкан Солнечной системы.', uz: 'Quyoshdan toʻrtinchi sayyora; yuzasidagi temir oksidi tufayli Qizil sayyora deb ataladi. Quyosh tizimidagi eng baland vulqonga ega.' },
+    didYouKnow: { ru: 'Гора Олимп на Марсе примерно в два с половиной раза выше Эвереста — самый высокий известный вулкан Солнечной системы.', uz: 'Marsdagi Olimp togʻi Everestdan taxminan ikki yarim baravar baland — Quyosh tizimida maʼlum boʻlgan eng baland vulqon.' },
   },
   jupiter: {
     name: { ru: 'Юпитер', uz: 'Yupiter' },
     description: { ru: 'Крупнейшая планета Солнечной системы, газовый гигант.', uz: 'Quyosh tizimidagi eng katta sayyora, gaz giganti.' },
-    didYouKnow: { ru: 'Большое красное пятно Юпитера — шторм, который бушует уже как минимум 350 лет.', uz: 'Yupiterning Katta Qizil Dog’i kamida 350 yildan beri davom etayotgan bo’rondir.' },
+    didYouKnow: { ru: 'Большое красное пятно Юпитера — шторм, который бушует уже как минимум 350 лет.', uz: 'Yupiterning Katta Qizil Dogʻi kamida 350 yildan beri davom etayotgan boʻrondir.' },
   },
   saturn: {
     name: { ru: 'Сатурн', uz: 'Saturn' },
-    description: { ru: 'Газовый гигант, знаменитый своей впечатляющей системой колец.', uz: 'Ajoyib halqalari bilan mashhur bo’lgan gaz giganti.' },
-    didYouKnow: { ru: 'Сатурн — единственная планета, плотность которой меньше плотности воды.', uz: 'Saturn — zichligi suvnikidan kichik bo’lgan yagona sayyora.' },
+    description: { ru: 'Газовый гигант, знаменитый своей впечатляющей системой колец.', uz: 'Ajoyib halqalari bilan mashhur boʻlgan gaz giganti.' },
+    didYouKnow: { ru: 'Сатурн — единственная планета, плотность которой меньше плотности воды.', uz: 'Saturn — zichligi suvnikidan kichik boʻlgan yagona sayyora.' },
   },
   uranus: {
     name: { ru: 'Уран', uz: 'Uran' },
-    description: { ru: 'Ледяной гигант с осью вращения, лежащей почти набок.', uz: 'O’qi yon tomonga og’gan muz giganti.' },
-    didYouKnow: { ru: 'Уран вращается «лёжа на боку» — наклон оси около 98°.', uz: 'Uran «yonboshlab» aylanadi — o’q og’ishi taxminan 98°.' },
+    description: { ru: 'Ледяной гигант, вращающийся «лёжа на боку».', uz: 'Oʻqi yonboshlab qolgan muz giganti.' },
+    didYouKnow: { ru: 'Уран вращается «лёжа на боку» — наклон оси около 98°.', uz: 'Uran «yonboshlab» aylanadi — oʻq ogʻishi taxminan 98°.' },
   },
   neptune: {
     name: { ru: 'Нептун', uz: 'Neptun' },
-    description: { ru: 'Самая ветреная планета — со сверхзвуковыми атмосферными штормами.', uz: 'Tovush tezligidan o’zib ketadigan atmosfera bo’ronlari bilan eng shamol sayyora.' },
+    description: { ru: 'Самая ветреная планета — со сверхзвуковыми атмосферными штормами.', uz: 'Eng shamolli sayyora — boʻronlari tovush tezligidan ham oshib ketadi.' },
     didYouKnow: { ru: 'Скорость ветра на Нептуне может достигать 2100 км/ч.', uz: 'Neptundagi shamol tezligi soatiga 2100 km gacha yetishi mumkin.' },
   },
   ceres: {
-    name: { ru: 'Церера', uz: 'Tserera' },
+    name: { ru: 'Церера', uz: 'Serera' },
     description: { ru: 'Единственная карликовая планета во внутренней Солнечной системе.', uz: 'Ichki Quyosh tizimidagi yagona mitti sayyora.' },
   },
   pluto: {
@@ -1824,11 +1836,11 @@ const BODY_I18N = {
   },
   sedna: {
     name: { ru: 'Седна', uz: 'Sedna' },
-    description: { ru: 'Далёкий транснептуновый объект с экстремальной орбитой.', uz: 'O’ta cho’ziq orbitaga ega uzoq trans-Neptun ob’yekti.' },
+    description: { ru: 'Далёкий транснептуновый объект с экстремальной орбитой.', uz: 'Oʻta choʻziq orbitaga ega uzoq trans-Neptun obyekti.' },
   },
   moon: {
     name: { ru: 'Луна', uz: 'Oy' },
-    description: { ru: 'Единственный естественный спутник Земли.', uz: 'Yerning yagona tabiiy yo’ldoshi.' },
+    description: { ru: 'Единственный естественный спутник Земли.', uz: 'Yerning yagona tabiiy yoʻldoshi.' },
     didYouKnow: { ru: 'Луна удаляется от Земли примерно на 3,8 см в год.', uz: 'Oy Yerdan yiliga taxminan 3,8 sm uzoqlashmoqda.' },
   },
   io: {
@@ -1837,58 +1849,58 @@ const BODY_I18N = {
   },
   europa: {
     name: { ru: 'Европа', uz: 'Yevropa' },
-    description: { ru: 'Ледяной спутник, под поверхностью которого, как считают, есть океан.', uz: 'Yuzasi ostida okean bor deb taxmin qilinadigan muzli yo’ldosh.' },
+    description: { ru: 'Ледяной спутник, под поверхностью которого, как считают, есть океан.', uz: 'Yuzasi ostida okean bor deb taxmin qilinadigan muzli yoʻldosh.' },
   },
   ganymede: {
     name: { ru: 'Ганимед', uz: 'Ganimed' },
-    description: { ru: 'Крупнейший спутник Солнечной системы.', uz: 'Quyosh tizimidagi eng katta yo’ldosh.' },
+    description: { ru: 'Крупнейший спутник Солнечной системы.', uz: 'Quyosh tizimidagi eng katta yoʻldosh.' },
   },
   callisto: {
     name: { ru: 'Каллисто', uz: 'Kallisto' },
-    description: { ru: 'Ледяной спутник Юпитера, покрытый множеством кратеров.', uz: 'Kraterlar bilan qoplangan Yupiterning muzli yo’ldoshi.' },
+    description: { ru: 'Ледяной спутник Юпитера, покрытый множеством кратеров.', uz: 'Yupiterning kraterlar bilan qoplangan muzli yoʻldoshi.' },
   },
   titan: {
     name: { ru: 'Титан', uz: 'Titan' },
-    description: { ru: 'Спутник с плотной азотной атмосферой и жидкими озёрами.', uz: 'Qalin azot atmosferasi va suyuq ko’llari bo’lgan yo’ldosh.' },
+    description: { ru: 'Спутник с плотной азотной атмосферой и жидкими озёрами.', uz: 'Qalin azot atmosferasi va suyuq koʻllari boʻlgan yoʻldosh.' },
   },
   enceladus: {
-    name: { ru: 'Энцелад', uz: 'Entselad' },
-    description: { ru: 'Ледяной спутник, выбрасывающий струи воды из южного полюса.', uz: 'Janubiy qutbidan suv otilib chiqayotgan muzli yo’ldosh.' },
+    name: { ru: 'Энцелад', uz: 'Enselad' },
+    description: { ru: 'Ледяной спутник, выбрасывающий струи воды из южного полюса.', uz: 'Janubiy qutbidan suv otilib chiqayotgan muzli yoʻldosh.' },
   },
   halley: {
     name: { ru: 'Комета Галлея', uz: 'Galley kometasi' },
-    description: { ru: 'Короткопериодическая комета, видимая с Земли примерно раз в 76 лет.', uz: 'Yerdan taxminan har 76 yilda bir marta ko’rinadigan qisqa davrli kometa.' },
-    didYouKnow: { ru: 'Последний раз была видна в 1986 году; следующий перигелий — около 2061 года.', uz: 'Oxirgi marta 1986-yilda ko’rilgan; keyingi perigeliy taxminan 2061-yilda.' },
+    description: { ru: 'Короткопериодическая комета, видимая с Земли примерно раз в 76 лет.', uz: 'Yerdan taxminan har 76 yilda bir marta koʻrinadigan qisqa davrli kometa.' },
+    didYouKnow: { ru: 'Последний раз была видна в 1986 году; следующий перигелий — около 2061 года.', uz: 'Oxirgi marta 1986-yilda koʻrilgan; keyingi perigeliy taxminan 2061-yilda.' },
   },
   voyager1: {
     name: { ru: 'Вояджер-1', uz: 'Voyager-1' },
-    description: { ru: 'Запущен в 1977 году, пролетел мимо Юпитера и Сатурна, сейчас находится в межзвёздном пространстве — самый удалённый рукотворный объект.', uz: '1977-yilda uchirilgan; Yupiter va Saturn yonidan o’tib, hozir yulduzlararo fazoda — insoniyat yaratgan eng uzoq ob’yekt.' },
-    didYouKnow: { ru: 'В ноябре 2026 года Вояджер-1 стал первым аппаратом, удалившимся от Земли на один световой день.', uz: '2026-yil noyabrida Voyager-1 Yerdan bir yorug’lik kunigacha uzoqlashgan ilk apparat bo’ldi.' },
+    description: { ru: 'Запущен в 1977 году, пролетел мимо Юпитера и Сатурна, сейчас находится в межзвёздном пространстве — самый удалённый рукотворный объект.', uz: '1977-yilda uchirilgan; Yupiter va Saturn yonidan oʻtib, hozir yulduzlararo fazoda — insoniyat yaratgan eng uzoq obyekt.' },
+    didYouKnow: { ru: 'В ноябре 2026 года Вояджер-1 стал первым аппаратом, удалившимся от Земли на один световой день.', uz: '2026-yil noyabrida Voyager-1 Yerdan bir yorugʻlik kunigacha uzoqlashgan ilk apparat boʻldi.' },
   },
   voyager2: {
     name: { ru: 'Вояджер-2', uz: 'Voyager-2' },
-    description: { ru: 'Запущен в 1977 году; единственный аппарат, посетивший все четыре внешние планеты — Юпитер, Сатурн, Уран и Нептун.', uz: '1977-yilda uchirilgan; to’rttala tashqi sayyorani — Yupiter, Saturn, Uran va Neptunni — ziyorat qilgan yagona kosmik apparat.' },
+    description: { ru: 'Запущен в 1977 году; единственный аппарат, посетивший все четыре внешние планеты — Юпитер, Сатурн, Уран и Нептун.', uz: '1977-yilda uchirilgan; toʻrttala tashqi sayyorani — Yupiter, Saturn, Uran va Neptunni — ziyorat qilgan yagona kosmik apparat.' },
     didYouKnow: { ru: 'Вояджер-2 вышел в межзвёздное пространство в ноябре 2018 года.', uz: 'Voyager-2 2018-yil noyabrida yulduzlararo fazoga chiqdi.' },
   },
   new_horizons: {
-    name: { ru: 'Новые горизонты', uz: 'Yangi ufqlar' },
-    description: { ru: 'Запущен в 2006 году; пролетел мимо Плутона в 2015-м и объекта пояса Койпера Аррокот в 2019-м.', uz: '2006-yilda uchirilgan; 2015-yilda Pluton yonidan, 2019-yilda Koyper kamari ob’yekti Arrokot yonidan o’tdi.' },
-    didYouKnow: { ru: 'Новые горизонты — единственный аппарат, побывавший рядом с Плутоном.', uz: 'Yangi ufqlar — Plutonni yaqindan ziyorat qilgan yagona kosmik apparat.' },
+    name: { ru: 'Новые горизонты', uz: 'New Horizons' },
+    description: { ru: 'Запущен в 2006 году; пролетел мимо Плутона в 2015-м и объекта пояса Койпера Аррокот в 2019-м.', uz: '2006-yilda uchirilgan; 2015-yilda Pluton yonidan, 2019-yilda Koyper kamari obyekti Arrokot yonidan oʻtdi.' },
+    didYouKnow: { ru: 'Новые горизонты — единственный аппарат, побывавший рядом с Плутоном.', uz: 'New Horizons — Plutonni yaqindan ziyorat qilgan yagona kosmik apparat.' },
   },
   jwst: {
     name: { ru: 'Джеймс Уэбб', uz: 'Jeyms Vebb' },
     description: { ru: 'Запущен в 2021 году; крупнейший когда-либо построенный космический телескоп, обращается вокруг точки L2 системы Солнце–Земля.', uz: '2021-yilda uchirilgan; Quyosh–Yer L2 nuqtasi atrofida aylanayotgan eng katta kosmik teleskop.' },
-    didYouKnow: { ru: 'Джеймс Уэбб находится в 1,5 млн км от Земли — примерно в 4 раза дальше Луны.', uz: 'Jeyms Vebb Yerdan 1,5 million km uzoqlikda — bu Oygacha bo’lgan masofadan taxminan 4 baravar uzoq.' },
+    didYouKnow: { ru: 'Джеймс Уэбб находится в 1,5 млн км от Земли — примерно в 4 раза дальше Луны.', uz: 'Jeyms Vebb Yerdan 1,5 million km uzoqlikda — bu Oygacha boʻlgan masofadan taxminan 4 baravar uzoq.' },
   },
   parker: {
     name: { ru: 'Зонд Паркер', uz: 'Parker zondi' },
-    description: { ru: 'Запущен в 2018 году; ближайший к Солнцу аппарат, многократно входит в корону.', uz: '2018-yilda uchirilgan; Quyoshga eng yaqin apparat, korona ichiga bir necha bor sho’ng’igan.' },
-    didYouKnow: { ru: 'В перигелии Паркер развивает скорость более 690 000 км/ч — самый быстрый рукотворный объект.', uz: 'Parker perigeliyda 690 000 km/soatdan ortiq tezlikka erishadi — insoniyat yaratgan eng tez ob’yekt.' },
+    description: { ru: 'Запущен в 2018 году; ближайший к Солнцу аппарат, многократно входит в корону.', uz: '2018-yilda uchirilgan; Quyoshga eng yaqin apparat, korona ichiga bir necha bor shoʻngʻigan.' },
+    didYouKnow: { ru: 'В перигелии Паркер развивает скорость более 690 000 км/ч — самый быстрый рукотворный объект.', uz: 'Parker perigeliyda 690 000 km/soatdan ortiq tezlikka erishadi — insoniyat yaratgan eng tez obyekt.' },
   },
   juno: {
     name: { ru: 'Юнона', uz: 'Yunona' },
-    description: { ru: 'Запущена в 2011 году; обращается вокруг Юпитера по сильно вытянутой полярной орбите и заглядывает сквозь верхушки облаков.', uz: '2011-yilda uchirilgan; Yupiter atrofida juda cho’ziq qutbiy orbitada aylanib, bulutlar tepasiga nazar tashlaydi.' },
-    didYouKnow: { ru: 'Юнона питается от трёх огромных солнечных панелей — первый аппарат, использующий солнечную энергию за поясом астероидов.', uz: 'Yunona uchta katta quyosh paneli bilan ishlaydi — asteroid kamaridan o’tib quyosh energiyasidan foydalangan ilk apparat.' },
+    description: { ru: 'Запущена в 2011 году; обращается вокруг Юпитера по сильно вытянутой полярной орбите и заглядывает сквозь верхушки облаков.', uz: '2011-yilda uchirilgan; Yupiter atrofida juda choʻziq qutbiy orbitada aylanib, bulutlar tepasiga nazar tashlaydi.' },
+    didYouKnow: { ru: 'Юнона питается от трёх огромных солнечных панелей — первый аппарат, использующий солнечную энергию за поясом астероидов.', uz: 'Yunona uchta katta quyosh paneli bilan ishlaydi — asteroid kamaridan oʻtib quyosh energiyasidan foydalangan ilk apparat.' },
   },
 };
 
@@ -1978,10 +1990,14 @@ const fmt = {
   ecc: e => e.toFixed(3),
   simDate: ms => {
     const d = new Date(ms);
-    const m = d.toLocaleString('en-US', { month:'short', timeZone:'UTC' });
+    const locale = state.lang === 'ru' ? 'ru-RU' : state.lang === 'uz' ? 'uz' : 'en-US';
+    const m = d.toLocaleString(locale, { month:'short', timeZone:'UTC' });
     const hh = String(d.getUTCHours()).padStart(2,'0');
     const mm = String(d.getUTCMinutes()).padStart(2,'0');
-    return `${m} ${d.getUTCDate()}, ${d.getUTCFullYear()} ${hh}:${mm} UTC`;
+    // English keeps "Jun 10, 2026"; Russian and Uzbek read day-first.
+    return state.lang === 'en'
+      ? `${m} ${d.getUTCDate()}, ${d.getUTCFullYear()} ${hh}:${mm} UTC`
+      : `${d.getUTCDate()} ${m} ${d.getUTCFullYear()}, ${hh}:${mm} UTC`;
   },
 };
 
@@ -4415,7 +4431,7 @@ function kindLabelPlural(kind) {
   if (state.lang === 'uz') {
     const map = {
       star: 'Yulduzlar', planet: 'Sayyoralar', dwarf_planet: 'Mitti sayyoralar',
-      moon: "Yo\u2019ldoshlar", comet: 'Kometalar', spacecraft: 'Kosmik kemalar',
+      moon: "Yoʻldoshlar", comet: 'Kometalar', spacecraft: 'Kosmik kemalar',
     };
     return map[kind] || singular;
   }
@@ -4722,14 +4738,14 @@ function statRow(label, target, format) {
 
 function formatStat(value, format) {
   switch (format) {
-    case 'km':    return `${Math.round(value).toLocaleString('en-US')} km`;
-    case 'mass':  return value === 0 ? '—' : `${value.toExponential(2)} kg`;
-    case 'au':    return `${value.toFixed(3)} AU`;
+    case 'km':    return `${Math.round(value).toLocaleString('en-US')} ${t('unitKm')}`;
+    case 'mass':  return value === 0 ? '—' : `${value.toExponential(2)} ${t('unitKg')}`;
+    case 'au':    return `${value.toFixed(3)} ${t('unitAU')}`;
     case 'ecc':   return value.toFixed(3);
     case 'deg':   return `${value.toFixed(1)}°`;
     case 'years': return value === 0 ? '—' : `${value.toFixed(2)} ${t('unitYears')}`;
     case 'hours': return value === 0 ? '—' : `${value.toFixed(1)} ${t('unitHours')}`;
-    case 'speed': return value === 0 ? '—' : `${value.toFixed(2)} km/s`;
+    case 'speed': return value === 0 ? '—' : `${value.toFixed(2)} ${t('unitKmS')}`;
     default:      return String(value);
   }
 }
@@ -4785,7 +4801,7 @@ function getInfoPinText() {
   const lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
   const dict = {
     en: 'Info', ru: 'Инфо', es: 'Info', de: 'Info', fr: 'Info',
-    pt: 'Info', it: 'Info', uk: 'Iнфо', zh: '信息', ja: '情報', ko: '정보',
+    pt: 'Info', it: 'Info', uk: 'Інфо', zh: '信息', ja: '情報', ko: '정보',
   };
   return dict[lang] || dict.en;
 }
@@ -4869,7 +4885,7 @@ document.getElementById('profile-btn').addEventListener('click', () => {
 // LANGUAGE PICKER
 // ===================================================================
 // A tiny overlay sheet showing three big buttons — English / Русский /
-// O\u2019zbekcha. Saving fires applyLang() which re-renders all live UI.
+// Oʻzbekcha. Saving fires applyLang() which re-renders all live UI.
 function openLanguageMenu() {
   // Reuse the backdrop element and stack a custom panel on top.
   const existing = document.getElementById('lang-sheet');
@@ -4885,7 +4901,7 @@ function openLanguageMenu() {
   const langs = [
     { id: 'en', label: 'English' },
     { id: 'ru', label: 'Русский' },
-    { id: 'uz', label: "O\u2019zbekcha" },
+    { id: 'uz', label: "Oʻzbekcha" },
   ];
   sheet.innerHTML = `
     <div style="font-size:14px; opacity:0.7; margin-bottom:6px;">${t('language')}</div>
@@ -5680,7 +5696,7 @@ function openBirthday() {
     const fmtKm = Math.round(kmWithEarth).toLocaleString(state.lang === 'en' ? 'en-US' : 'ru-RU');
     factsEl.innerHTML = `
       <div class="birthday-fact"><strong>${orbits.toFixed(2)}</strong>${t('birthdayOrbits')}</div>
-      <div class="birthday-fact"><strong>${fmtKm} km</strong>${t('birthdayKm')}</div>
+      <div class="birthday-fact"><strong>${fmtKm} ${t('unitKm')}</strong>${t('birthdayKm')}</div>
       <div class="birthday-fact"><strong>${moonOrbits.toFixed(1)}</strong>${t('birthdayMoonOrbits')}</div>
       <div class="birthday-fact"><strong>${Math.floor(days).toLocaleString(state.lang === 'en' ? 'en-US' : 'ru-RU')}</strong>${t('birthdayDays')}</div>
       <div class="birthday-actions">

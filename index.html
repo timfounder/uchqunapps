@@ -168,9 +168,23 @@
       .top-bar {
         top: 0; left: 0; right: 0;
         padding: 16px;
-        display: flex; justify-content: space-between; align-items: center;
+        display: flex; justify-content: space-between; align-items: flex-start;
         gap: 8px;
       }
+      /* The date and the (sometimes long, localized) event pill must give way
+         so the icon stack on the right always stays on screen. They shrink and
+         clip with an ellipsis instead of pushing the icons off the viewport. */
+      .top-bar > #sim-date,
+      .top-bar > #event-pill {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* The event pill (shrink factor 100) collapses almost entirely before the
+         date (factor 1) gives up any width, so the full date/time stays visible
+         on normal phones while the icons on the right are never pushed off. */
+      .top-bar > #sim-date  { flex: 0 1 auto; }
+      .top-bar > #event-pill { flex: 0 100 auto; }
       .pill {
         border-radius: 14px;
         padding: 8px 12px;
@@ -196,6 +210,15 @@
       .top-right-stack {
         display: flex; flex-direction: column; gap: 8px;
         align-items: flex-end;
+        flex: 0 0 auto;          /* never shrink — keep the icons fully visible */
+        max-width: 60%;
+      }
+      /* Let the text toggles wrap to a second line (right-aligned) rather than
+         widening the stack — long Uzbek/Russian labels were forcing the whole
+         icon column off the right edge of the screen. */
+      .top-right-stack .pill {
+        white-space: normal;
+        text-align: right;
       }
 
       /* Bottom bar */
@@ -1210,11 +1233,11 @@
           <div class="sheet peek" id="list-sheet">
             <div class="sheet-handle" id="list-handle"></div>
             <div class="sheet-title-row">
-              <h2 class="sheet-title" id="list-title">Bodies · 20</h2>
+              <h2 class="sheet-title" id="list-title">Jismlar</h2>
             </div>
             <div class="sheet-body">
               <div class="search">
-                <input type="text" placeholder="Search bodies…" id="search-input" />
+                <input type="text" placeholder="Jismlarni qidirish…" id="search-input" />
               </div>
               <div id="list-groups"></div>
             </div>
@@ -1440,6 +1463,8 @@ const STRINGS = {
     randomBody: 'Random body',
     profile: 'Profile',
     language: 'Language',
+    searchPlaceholder: 'Search bodies…',
+    noMatches: 'No matches.',
     info: 'Info',
     didYouKnow: 'Did you know?',
     habitability: 'Habitability',
@@ -1544,6 +1569,8 @@ const STRINGS = {
     randomBody: 'Случайный объект',
     profile: 'Профиль',
     language: 'Язык',
+    searchPlaceholder: 'Поиск объектов…',
+    noMatches: 'Ничего не найдено.',
     info: 'Подробнее',
     didYouKnow: 'А вы знали?',
     habitability: 'Пригодность для жизни',
@@ -1648,6 +1675,8 @@ const STRINGS = {
     randomBody: 'Tasodifiy jism',
     profile: 'Profil',
     language: 'Til',
+    searchPlaceholder: 'Jismlarni qidirish…',
+    noMatches: 'Hech narsa topilmadi.',
     info: 'Batafsil',
     didYouKnow: 'Bilarmidingiz?',
     habitability: 'Yashashga yaroqlilik',
@@ -1660,7 +1689,7 @@ const STRINGS = {
     inclination: "Og\u2019ish",
     axialTilt: "O\u2019q og\u2019ishi",
     year: 'Yil',
-    day: 'Sutka',
+    day: 'Kun',
     distanceFromSun: 'Quyoshdan masofa',
     star: 'yulduz',
     planet: 'sayyora',
@@ -1682,37 +1711,37 @@ const STRINGS = {
     onboardNext: 'Keyingisi',
     onboardDone: 'Tushundim',
     onboard1Title: 'Uchqun’ga xush kelibsiz',
-    onboard1Text: 'Bu — uchib o‘taladigan 3D Quyosh tizimi. Haqiqiy orbitalar, masofalar va sayyoralarning bugungi joylashuvi.',
+    onboard1Text: 'Bu — uchib o’taladigan 3D Quyosh tizimi. Haqiqiy orbitalar, masofalar va sayyoralarning bugungi joylashuvi.',
     onboard2Title: 'Boshqaruv',
-    onboard2Text: 'Bir barmoq — ko‘rinishni aylantirish. Ikki barmoq — yaqinlashtirish. Sayyorani bosib uni fokuslang.',
+    onboard2Text: 'Bir barmoq — ko’rinishni aylantirish. Ikki barmoq — yaqinlashtirish. Sayyorani bosib uni fokuslang.',
     onboard3Title: 'Vaqt mashinasi',
-    onboard3Text: 'Pastdagi slayder vaqtni 50 yil oldinga yoki orqaga suradi. Sayyoralarning joylashuvi qanday o‘zgarishini ko‘ring.',
+    onboard3Text: 'Pastdagi slayder vaqtni 50 yil oldinga yoki orqaga suradi. Sayyoralarning joylashuvi qanday o’zgarishini ko’ring.',
     eventPillSoon: 'Yaqinda',
-    eventGo: 'Ko‘rsatish',
+    eventGo: 'Ko’rsatish',
     eventToday: 'Bugun',
     eventInDays: '{n} kundan keyin',
     eventTomorrow: 'ertaga',
     eventLast: '{n} kun oldin',
-    'event.fullMoon': 'To‘linoy',
-    'event.fullMoonDesc': 'Oy osmonda Quyoshga teskari tarafda — Yerdan to‘liq yoritilgan ko‘rinadi.',
+    'event.fullMoon': 'To’linoy',
+    'event.fullMoonDesc': 'Oy osmonda Quyoshga teskari tarafda — Yerdan to’liq yoritilgan ko’rinadi.',
     'event.newMoon': 'Yangi Oy',
-    'event.newMoonDesc': 'Oy Quyosh va Yer orasida turadi va ko‘rinmaydi. Yulduzlarni kuzatish uchun eng yaxshi tun.',
+    'event.newMoonDesc': 'Oy Quyosh va Yer orasida turadi va ko’rinmaydi. Yulduzlarni kuzatish uchun eng yaxshi tun.',
     'event.marsOpposition': 'Marsning qarama-qarshilanishi',
-    'event.marsOppositionDesc': 'Mars Yerga Quyoshga nisbatan qarama-qarshi tomondan — eng yaqin, eng yorqin va butun tun davomida ko‘rinadi.',
+    'event.marsOppositionDesc': 'Mars Yerga Quyoshga nisbatan qarama-qarshi tomondan — eng yaqin, eng yorqin va butun tun davomida ko’rinadi.',
     'event.solarEclipse': 'Quyosh tutilishi',
-    'event.solarEclipseDesc': 'Oy Quyosh bilan Yer orasidan o‘tib, Yerga soya tashlaydi.',
+    'event.solarEclipseDesc': 'Oy Quyosh bilan Yer orasidan o’tib, Yerga soya tashlaydi.',
     'event.lunarEclipse': 'Oy tutilishi',
-    'event.lunarEclipseDesc': 'Yer Oyga tushadigan quyosh nurini to‘sib qo‘yadi — Yerning soyasi Oyga tushadi.',
-    'event.perseids': 'Perseid meteor yomg‘irining cho‘qqisi',
+    'event.lunarEclipseDesc': 'Yer Oyga tushadigan quyosh nurini to’sib qo’yadi — Yerning soyasi Oyga tushadi.',
+    'event.perseids': 'Perseid meteor yomg’irining cho’qqisi',
     'event.perseidsDesc': 'Soatiga 100 tagacha meteor — radiant Persey burjida.',
-    'event.geminids': 'Geminid meteor yomg‘irining cho‘qqisi',
-    'event.geminidsDesc': 'Yilning eng kuchli yomg‘irlaridan biri — Egizaklar burjidan soatiga 120 tagacha meteor.',
+    'event.geminids': 'Geminid meteor yomg’irining cho’qqisi',
+    'event.geminidsDesc': 'Yilning eng kuchli yomg’irlaridan biri — Egizaklar burjidan soatiga 120 tagacha meteor.',
     'event.jupiterOpposition': 'Yupiterning qarama-qarshilanishi',
-    'event.jupiterOppositionDesc': 'Yupiter Yerga eng yaqin va osmonda eng yorqin — butun tun davomida ko‘rinadi.',
+    'event.jupiterOppositionDesc': 'Yupiter Yerga eng yaqin va osmonda eng yorqin — butun tun davomida ko’rinadi.',
     'event.saturnOpposition': 'Saturnning qarama-qarshilanishi',
-    'event.saturnOppositionDesc': 'Saturn Yerga eng yaqin va eng yorqin — uning halqalarini ko‘rishning eng yaxshi vaqti.',
-    arTitle: 'AR osmon yo‘riqchisi',
-    arIntro: 'Sayyorani tanlang va telefonni osmonga qarating. Strelka qayerga qarashni ko‘rsatadi.',
+    'event.saturnOppositionDesc': 'Saturn Yerga eng yaqin va eng yorqin — uning halqalarini ko’rishning eng yaxshi vaqti.',
+    arTitle: 'AR osmon yo’riqchisi',
+    arIntro: 'Sayyorani tanlang va telefonni osmonga qarating. Strelka qayerga qarashni ko’rsatadi.',
     arEnable: 'Sensorlarga ruxsat berish',
     arNoSensor: 'Sizning qurilmangiz yoki brauzeringiz orientatsiya ma’lumotlarini bermayapti. Telegram ilovasi orqali telefonda oching.',
     arBelowHorizon: 'Hozir ufqdan past',
@@ -1720,26 +1749,26 @@ const STRINGS = {
     arUp: 'tepaga',
     arDown: 'pastga',
     arLeft: 'chapga',
-    arRight: 'o‘ngga',
+    arRight: 'o’ngga',
     arAlt: 'Balandlik',
     arAz: 'Azimut',
-    birthdayTitle: 'Tug‘ilgan kuningiz koinotda',
-    birthdayPrompt: 'Tug‘ilgan sanani kiriting. Sayyoralar qayerda bo‘lganini va siz Yer bilan qancha yo‘l bosganingizni ko‘rsataman.',
+    birthdayTitle: 'Tug’ilgan kuningiz koinotda',
+    birthdayPrompt: 'Tug’ilgan sanani kiriting. Sayyoralar qayerda bo’lganini va siz Yer bilan qancha yo’l bosganingizni ko’rsataman.',
     birthdayPlaceholder: 'YYYY-OO-KK',
-    birthdayGo: 'Ko‘rsatish',
+    birthdayGo: 'Ko’rsatish',
     birthdayInvalid: 'Format: YYYY-OO-KK.',
     birthdayOrbits: 'Quyosh atrofidagi aylanishlar',
-    birthdayKm: 'Yer bilan bosib o‘tilgan kilometr',
-    birthdayMoonOrbits: 'Tug‘ilganingizdan beri Oy aylanishlari',
+    birthdayKm: 'Yer bilan bosib o’tilgan kilometr',
+    birthdayMoonOrbits: 'Tug’ilganingizdan beri Oy aylanishlari',
     birthdayDays: 'Yashagan kunlar',
-    birthdaySee: 'O‘sha kungi osmonni ko‘rsatish',
+    birthdaySee: 'O’sha kungi osmonni ko’rsatish',
     birthdayReset: 'Tozalash',
     profileLanguage: 'Til',
-    profileBirthday: 'Tug‘ilgan kun koinotda',
-    'speed.realtime': '1 son/s',
+    profileBirthday: 'Tug’ilgan kun koinotda',
+    'speed.realtime': '1 soniya/s',
     'speed.hours':    '1 soat/s',
-    'speed.day':      '1 sutka/s',
-    'speed.days3':    '3 sutka/s',
+    'speed.day':      '1 kun/s',
+    'speed.days3':    '3 kun/s',
     'speed.week':     '1 hafta/s',
     'speed.month':    '1 oy/s',
   },
@@ -4457,7 +4486,7 @@ function renderList() {
     `];
   }).join('');
 
-  listGroups.innerHTML = html || '<div style="text-align:center;color:var(--hint);padding:32px 0;font-size:14px;">No matches.</div>';
+  listGroups.innerHTML = html || `<div style="text-align:center;color:var(--hint);padding:32px 0;font-size:14px;">${t('noMatches')}</div>`;
   listGroups.querySelectorAll('.group-item').forEach(el => {
     el.addEventListener('click', () => openDetail(el.dataset.id));
   });
@@ -4936,6 +4965,9 @@ function applyLang() {
   // List header.
   const lt = document.getElementById('list-title');
   if (lt) lt.textContent = `${t('bodies')} · ${BODIES.length}`;
+  // Search box placeholder.
+  const si = document.getElementById('search-input');
+  if (si) si.placeholder = t('searchPlaceholder');
   // Re-render list groups so kind headers update.
   renderList();
   // Re-render the currently open detail view if any.
@@ -6005,20 +6037,7 @@ function openProfileMenu() {
                 style="flex:1; padding:10px 0; font-size:14px; font-weight:600; letter-spacing:0.5px;">
           ${L.label}
         </button>`).join('');
-  sheet.innerHTML = `
-    <div style="font-size:14px; opacity:0.7;">${t('profile')}</div>
-    <div style="display:flex; align-items:center; gap:10px; font-size:13px; opacity:0.85;">
-      <span style="font-size:16px;">🌐</span>
-      <span>${t('profileLanguage')}</span>
-    </div>
-    <div id="profile-lang-row" style="display:flex; gap:8px;">
-      ${renderLangRow()}
-    </div>
-    <button class="pill toggle-off" id="profile-bday"
-            style="padding:14px 16px; font-size:15px; text-align:left; margin-top:4px;">
-      🎂  ${t('profileBirthday')}
-    </button>
-  `;
+
   const backdrop = document.createElement('div');
   backdrop.id = 'lang-backdrop';
   backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:115;backdrop-filter:blur(4px);';
@@ -6027,27 +6046,39 @@ function openProfileMenu() {
   document.body.appendChild(backdrop);
   document.body.appendChild(sheet);
 
-  const wireLangPills = () => {
+  // Re-render the entire sheet so every label — title, language row and the
+  // Birthday button — reflects the current language. Earlier this only
+  // refreshed the pills and the Birthday line, leaving the "Profil" title and
+  // "Til" label stuck in the previous language after a switch.
+  const renderSheet = () => {
+    sheet.innerHTML = `
+      <div style="font-size:14px; opacity:0.7;">${t('profile')}</div>
+      <div style="display:flex; align-items:center; gap:10px; font-size:13px; opacity:0.85;">
+        <span style="font-size:16px;">🌐</span>
+        <span>${t('profileLanguage')}</span>
+      </div>
+      <div id="profile-lang-row" style="display:flex; gap:8px;">
+        ${renderLangRow()}
+      </div>
+      <button class="pill toggle-off" id="profile-bday"
+              style="padding:14px 16px; font-size:15px; text-align:left; margin-top:4px;">
+        🎂  ${t('profileBirthday')}
+      </button>
+    `;
     sheet.querySelectorAll('.lang-pill').forEach(b => {
       b.addEventListener('click', () => {
         playClick(); haptic('light');
         setLanguage(b.dataset.lang);
-        // Re-render the pills (active state) and the Birthday label without closing the sheet.
-        const row = sheet.querySelector('#profile-lang-row');
-        if (row) row.innerHTML = renderLangRow();
-        const bday = sheet.querySelector('#profile-bday');
-        if (bday) bday.innerHTML = `🎂  ${t('profileBirthday')}`;
-        wireLangPills();
+        renderSheet();  // refresh the whole menu in the new language
       });
     });
+    sheet.querySelector('#profile-bday').addEventListener('click', () => {
+      playClick(); haptic('light');
+      close();
+      openBirthday();
+    });
   };
-  wireLangPills();
-
-  sheet.querySelector('#profile-bday').addEventListener('click', () => {
-    playClick(); haptic('light');
-    close();
-    openBirthday();
-  });
+  renderSheet();
 }
 
 </script>

@@ -168,9 +168,23 @@
       .top-bar {
         top: 0; left: 0; right: 0;
         padding: 16px;
-        display: flex; justify-content: space-between; align-items: center;
+        display: flex; justify-content: space-between; align-items: flex-start;
         gap: 8px;
       }
+      /* The date and the (sometimes long, localized) event pill must give way
+         so the icon stack on the right always stays on screen. They shrink and
+         clip with an ellipsis instead of pushing the icons off the viewport. */
+      .top-bar > #sim-date,
+      .top-bar > #event-pill {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* The event pill (shrink factor 100) collapses almost entirely before the
+         date (factor 1) gives up any width, so the full date/time stays visible
+         on normal phones while the icons on the right are never pushed off. */
+      .top-bar > #sim-date  { flex: 0 1 auto; }
+      .top-bar > #event-pill { flex: 0 100 auto; }
       .pill {
         border-radius: 14px;
         padding: 8px 12px;
@@ -196,6 +210,15 @@
       .top-right-stack {
         display: flex; flex-direction: column; gap: 8px;
         align-items: flex-end;
+        flex: 0 0 auto;          /* never shrink — keep the icons fully visible */
+        max-width: 60%;
+      }
+      /* Let the text toggles wrap to a second line (right-aligned) rather than
+         widening the stack — long Uzbek/Russian labels were forcing the whole
+         icon column off the right edge of the screen. */
+      .top-right-stack .pill {
+        white-space: normal;
+        text-align: right;
       }
 
       /* Bottom bar */
